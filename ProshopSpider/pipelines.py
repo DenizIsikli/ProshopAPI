@@ -1,10 +1,12 @@
+import os
 import sqlite3
 from itemadapter import ItemAdapter
 
 
 class ProshopSpiderPipeline:
     def __init__(self):
-        self.db_name = 'Proshop.db'
+        base_dir = os.path.dirname(os.path.abspath("C:/Users/deniz/PycharmProjects/ProshopAPI/Proshop.db"))
+        self.db_name = os.path.join(base_dir, 'Proshop.db')
         self.conn = self.create_connection(self.db_name)
         self.cursor = self.conn.cursor()
         self.open_spider(None)
