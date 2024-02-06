@@ -19,11 +19,12 @@ class ProshopSpider(scrapy.Spider):
     def __init__(self, product_name=None, *args, **kwargs):
         super(ProshopSpider, self).__init__(*args, **kwargs)
         self.product_name = product_name
+        self.url = "https://www.proshop.dk/"
         self.products = []
 
     def start_requests(self):
         if self.product_name:
-            url = f'https://www.proshop.dk/?s={self.product_name.replace(" ", "+")}'
+            url = f'{self.url}?s={self.product_name.replace(" ", "+")}'
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response, **kwargs):
