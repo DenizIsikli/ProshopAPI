@@ -27,7 +27,6 @@ class ProshopSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response, **kwargs):
-        # Your parsing logic here
         for product_li in response.xpath('//ul[@id="products"]/li[contains(@class, "row toggle")]'):
             item = ProductItem()
             item['name'] = product_li.xpath('.//a[@class="site-product-link"]/h2/text()').get()
