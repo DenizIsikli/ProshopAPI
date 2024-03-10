@@ -5,10 +5,8 @@ from itemadapter import ItemAdapter
 
 class ProshopSpiderPipeline:
     def __init__(self):
-        # Correctly find the ProshopSpider directory relative to this file
         self.abs_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ProshopSpider'))
 
-        # Create the directory if it does not exist
         if not os.path.exists(self.abs_db_path):
             os.makedirs(self.abs_db_path)
 
