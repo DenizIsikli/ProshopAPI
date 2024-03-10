@@ -5,8 +5,14 @@ from itemadapter import ItemAdapter
 
 class ProshopSpiderPipeline:
     def __init__(self):
-        base_dir = os.path.dirname(os.path.abspath("C:/Users/deniz/PycharmProjects/ProshopAPI/Proshop.db"))
-        self.db_name = os.path.join(base_dir, 'Proshop.db')
+        # Correctly find the ProshopSpider directory relative to this file
+        self.abs_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ProshopSpider'))
+
+        # Create the directory if it does not exist
+        if not os.path.exists(self.abs_db_path):
+            os.makedirs(self.abs_db_path)
+
+        self.db_name = os.path.join(self.abs_db_path, 'Proshop.db')
         self.conn = self.create_connection(self.db_name)
         self.cursor = self.conn.cursor()
         self.open_spider(None)
@@ -46,7 +52,16 @@ class ProshopSpiderPipeline:
 
     def clear_table(self):
         try:
-            self.cursor.execute("DELETE FROM Products")
+            self.cursor.execute("DROP TABLE IF EXISTS Products")
+            self.cursor.execute('''
+                        CREATE TABLE Products (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            info TEXT,
+                            price TEXT,
+                            link TEXT
+                        )
+                    ''')
             self.conn.commit()
         except sqlite3.Error as e:
             print(f"Error clearing table: {e}")
